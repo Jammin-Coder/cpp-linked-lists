@@ -3,6 +3,8 @@
 
 using namespace std;
 
+// Some of this code is inspired by someone else who made a post about linked lists, but I forget who it was, when I find the post again, I will give proper attribution.
+
 class List
 {
 private:
