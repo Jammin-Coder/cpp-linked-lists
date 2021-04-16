@@ -32,6 +32,7 @@ private:
 	int m_maxIndex = m_size - 1;
 	node* m_head = list();
 	node* m_first = m_head; // Sets the first list node to the current state of m_head
+	node* m_last = m_head;
 
 
 public:
@@ -134,21 +135,12 @@ public:
 	// appends to list
 	void append(int value)
 	{
-		m_head = m_first;
-		for(int i = 0; i <= m_size; i++)
-		{
-			if (m_head->next != NULL)
-			{
-				m_head = m_head->next;
-			}
-			else if (i == m_size)
-			{
-				node* second = list();
-				m_head->next = second;
-				second->prev = m_head;
-				second->data = value;
-			}
-		}
+		node* nextNode = list();
+		m_last->next = nextNode;
+		nextNode->prev = m_last;
+		nextNode->data = value;
+		m_last = nextNode;
+
 		m_size++;
 	}
 
