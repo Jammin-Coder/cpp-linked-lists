@@ -15,6 +15,3 @@ Each node contains placholders for the data(integer), the next list-node, and th
 A list-head is then initialized with the `list()` method. The list head is the start of the list. This creates a list 
 head with the `data` field set to 0, and `next` and `prev` fields set to NULL. This node is not used when accessing the list, 
 it's just used to initialize the list. 
-
-### The methods:
-#### Sorry, I need a break, I will explain all the methods later...
