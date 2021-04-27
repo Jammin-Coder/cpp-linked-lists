@@ -8,7 +8,7 @@ on linked-lists to bail you out.
 ## How it works 
 Within the `List` class, first we define list-node type we call `node`.  
 ```
-// Code inspired by someone on the internet. I forget where the post was and the username of the poster, once I find it again I will post it here.
+// This struct bit was inspired by the post at geeksforgeeks.org/linked-list-set-1-introduction
 typedef struct Node 
 	{  
 		 int data; // Integer to be stored.
