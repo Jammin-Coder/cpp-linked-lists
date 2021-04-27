@@ -1,3 +1,5 @@
+// The node struct was inspired by the post at geeksforgeeks.org/linked-list-set-1-introduction
+
 #include <iostream>
 #include <cstring>
 #include <stdlib.h>
@@ -7,6 +9,7 @@ using namespace std;
 class List
 {
 private:
+	// This struct bit was inspired by the post at geeksforgeeks.org/linked-list-set-1-introduction
 	typedef struct Node
 	{
 		int data;
