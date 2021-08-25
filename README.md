@@ -5,40 +5,21 @@ This library is best used when you need a dynamicly sized list, and staticly siz
 So don't go too crazy with this code. It's always best to try and find a work-around solution before relying 
 on linked-lists to bail you out. 
 
-## How it works 
-Within the `List` class, first we define list-node type we call `node`.  
-```
-// This struct bit was inspired by the post at geeksforgeeks.org/linked-list-set-1-introduction
-typedef struct Node 
-	{  
-		 int data; // Integer to be stored.
-		 struct Node* next; // node-type pointer to next element in list
-		 struct Node* prev; // node-type pointer to previous element in list
-	} node;
-```
-Each node contains placholders for the data(integer), the next list-node, and the previous list-node. The next and prev nodes are pointers. 
-A list-head is then initialized with the `list()` method. The list head is the start of the list. This creates a list 
-head with the `data` field set to 0, and `next` and `prev` fields set to NULL. This node is not used when accessing the list, 
-it's just used to initialize the list. 
-This allows you to chain many list-nodes together, making a doubley-linked list.
+## To use:
+Include LinkedList.cpp in cpp file:  
+`#include "LinkedList.cpp"`  
 
+Instantiate a new List object:  
+`List<TYPE> myList = List<TYPE>(FIRST_DATA); `  
 
-## How to use this library 
+TYPE specifies the type of data to be stored in the list, I've tested it with `ints` and `const char*`, but it should work with most, if not all data types.  
+FIRST_DATA is the data that you want to be contained at the first index of the list. At the moment it is required that you supply this value when instantiating a new list.  
 
-### Create a List object:
-`List myList; // Creates an empty List object.` 
-
-### Methods:
-```c++
-myList.append(54); // Appends 54 to list. 
-
-myList.remel(1); // Returns and removes the element at index 1(or provided index) 
-
-myList.print(); // Prints items in the list. 
-
-myList.index(7); // Returns the element at index 7(or provided index)
-
-// Removes all the elements from the first provided index, and to the last index, including the elements at the provided indices
-// When removed multiple items at once, this is MUCH faster than using a for-loop and remel.
-myList.slice(9, 18);
+### Examples:
+``` c++
+List<int> int_list = List<int>(0); // Creates a new doubly linked list of ints with 0 stored at the first index
+int_list.append(2); // Appends 2 to int_list
+List<const char*> str_list = List<const char*>("Hello"); // Creates a doubly linked list of const char* (strings) with "Hello" set at the first index
+str_list.prepend("HECK YEAH, BABY!"); // Appends new string to str_list
+str_list.print(); // Prints all contenst of str_list
 ```
