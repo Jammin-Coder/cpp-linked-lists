@@ -2,16 +2,47 @@
 
 #define str const char*
 
+template<typename T>
+void log(T data)
+{
+    std::cout << data << std::endl;
+}
+
+
+List<int> return_list()
+{
+    List<int> list = List<int>();
+    
+    for (int i = 0; i < 10; i++)
+    {
+        list.append(i);
+    }
+    
+    return list;
+}
+
+template<typename T>
+void print_list(List<T>* lst)
+{
+    for (int i = 0; i < lst->length; i++)
+    {
+        log(lst->at(i));
+    }
+}
+
+
 int main()
 {
-	List<int> int_list = List<int>(1);
-	List<str> str_list = List<str>("Hey");
+	List<int> list = return_list();
 	
-	int_list.append(2);
-	str_list.append("HECK YEAH BABY!!");
-	std::cout << int_list.at(1) << std::endl;
+	const char* word_arr[] = {"Hey", "This is cool", "sup", "yo", ":D"};
+	int words_size = sizeof(word_arr)/sizeof(const char*);
 	
-	std::cout << str_list.at(1) << std::endl;
+	
+	List<const char*> words = List<const char*>(word_arr, words_size);
+	
+	print_list(&words);
+    
 }
 
 

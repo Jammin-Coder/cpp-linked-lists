@@ -6,55 +6,39 @@ template<typename T>
 class List
 {
 private:
-	int list_size;
-	
+
+    bool has_initialized = false;
 
 	int last_index()
 	{
-		return list_size - 1;
+	    if (length > 0)
+	    {
+		    return length - 1;
+		} 
+		else 
+		{
+		    return 0;
+		} 
 	}
 
 public:
-	
 	#define nodePTR Node<T>*
 	
+	int length = 0;
 	
 	nodePTR first_node = new_node<T>(last_index());
 	nodePTR last_node = first_node;
 	
-	
-	void print()
+	nodePTR get_node_at_index(int index)
 	{
-		nodePTR current_node = first_node;
-		std::cout << "[";
-		
-		for(int i = 0; i < list_size; i++)
-		{
-			if(&current_node->m_data != NULL)
-			{
-				std::cout << current_node->m_data;
-				nodePTR next_node = current_node->m_next;
-				current_node = next_node;
-			}
-			else break;
-			
-			if (i != last_index())
-				std::cout << ", ";
-		}
-		
-		std::cout << "]" << std::endl;
-	}
-	
-	T at(int index)
-	{
-		if (index > last_index())
+	    if (index > last_index())
 		{
 			// << "\tList's highest index is " << last_index() << " but you supplied " << index 
 			std::cout << "[-] ERROR: Index out of range." << std::endl;
 		}
 		
 		/*
-		* If list_size is greater than 4 and index less than or equal to
+		* If length is greater than 4 and index less than or equal to
 		* the last index divided by 2, then the wanted index is located in
 		* the lower half of the list.
 		*/
@@ -72,7 +56,7 @@ public:
 				{
 					if (i == index)
 					{
-						return current_node->m_data;
+						return current_node;
 					}
 					nodePTR next_node = current_node->m_next;
 					current_node = next_node;
@@ -93,7 +77,7 @@ public:
 				{
 					if (i == index)
 					{
-						return current_node->m_data;
+						return current_node;
 					}
 					nodePTR prev_node = current_node->m_prev;
 					current_node = prev_node;
@@ -104,58 +88,174 @@ public:
 		exit(-1);
 	}
 	
+	void print()
+	{
+		std::cout << "[";
+
+		for(int i = 0; i < length; i++)
+		{
+			std::cout << at(i);
+			if (i != last_index())
+				std::cout << ", ";
+		}
+		
+		std::cout << "]" << std::endl;
+	}
+	
+	T at(int index)
+	{
+		nodePTR node = get_node_at_index(index);
+		return node->m_data;
+	}
+	
 	void prepend(T data)
 	{
-		// New node to be prepended
-		nodePTR node = new_node<T>(last_index());
+	    if (has_initialized)
+	    {
+		    // New node to be prepended
+		    nodePTR node = new_node<T>(last_index());
+		    
+		    // Sets the new node's previous node to that of the first node
+		    node->m_prev = first_node->m_prev;
+		    
+		    // Sets the previous node of the first node to the new node
+		    first_node->m_prev = node;
+		    
+		    // Sets the new node's next node to the first_node
+		    node->m_next = first_node;
+		    
+		    // Assignes the given data to the new node's data member
+		    node->m_data = data;
+		    
+		    // Sets the first node to the new node
+		    first_node = node;
+		}
+		else 
+		{
+		    first_node->m_data;   
+		}
 		
-		// Sets the new node's previous node to that of the first node
-		node->m_prev = first_node->m_prev;
-		
-		// Sets the previous node of the first node to the new node
-		first_node->m_prev = node;
-		
-		// Sets the new node's next node to the first_node
-		node->m_next = first_node;
-		
-		// Assignes the given data to the new node's data member
-		node->m_data = data;
-		
-		// Sets the first node to the new node
-		first_node = node;
-		
-		list_size++;
+		length++;
 	}
 	
 	void append(T data)
 	{
-		// New node that will be appended
-		nodePTR node = new_node<T>(last_index());
+	    if (has_initialized)
+	    {
+		    // New node that will be appended
+		    nodePTR node = new_node<T>(last_index());
+		    
+		    // Sets the new node's next node to the last_node's next node.
+		    node->m_next = last_node->m_next;
+		    
+		    // Sets the new node's previous node to the last node
+		    node->m_prev = last_node;
+		    
+		    // Sets the last_node's next node to the new node
+		    last_node->m_next = node;
+		    
+		    // Assignes the given data to the new node's data member
+		    node->m_data = data;
+		    
+		    // Updates last_node to the new node 
+		    last_node = node;
+		}
 		
-		// Sets the new node's next node to the last_node's next node.
-		node->m_next = last_node->m_next;
+		else 
+		{
+		    first_node->m_data = data;
+		    has_initialized = true;
+		}
 		
-		// Sets the new node's previous node to the last node
-		node->m_prev = last_node;
+		length++;
 		
-		// Sets the last_node's next node to the new node
-		last_node->m_next = node;
-		
-		// Assignes the given data to the new node's data member
-		node->m_data = data;
-		
-		// Updates last_node to the new node 
-		last_node = node;
-		
-		list_size++;
+	}
+	
+	T remove(int index)
+	{
+	    nodePTR target_node = get_node_at_index(index);
+	    T data = target_node->m_data;
+	    
+	    nodePTR before_node = target_node->m_prev;
+	    nodePTR after_node = target_node->m_next;
+
+        if (before_node)
+        {
+	        before_node->m_next = after_node;
+	    }
+	     
+	    if (after_node)
+	    {   
+	        after_node->m_prev = before_node;
+	    }
+	    
+	    delete target_node;
+	    return data;
+	}
+	
+	T pop()
+	{
+	    nodePTR target_node = last_node;
+	    nodePTR before_node = last_node->m_prev;
+	    
+	    T data = last_node->m_data;
+	    
+	    if(before_node != NULL)
+	    {
+	        last_node = before_node;
+	        last_node->m_next = nullptr;
+	    }
+	    
+	    delete target_node;
+	    length--;
+	    return data;
+	}
+	
+	int size_bytes()
+	{
+	    int size = 0;
+	    nodePTR current_node = first_node;
+	    while (current_node != NULL)
+	    {
+            nodePTR next_node = current_node->m_next;
+            current_node = next_node;
+            size += sizeof(Node<T>);
+	    }
+	    return size;
 	}
 	
 	
-	List(T data)
+	// Constructor and destructor functions
+	List(void)
 	{
-		first_node->m_next = last_node;
-		first_node->m_data = data;
-		list_size++;
+		
+	}
+	
+	List(T init_arr[], int size)
+	{
+	    for (int i = 0; i < size; i++)
+	    {
+	        append(init_arr[i]);
+	    }
+	}
+	
+	~List()
+	{
+	    nodePTR current_node = first_node;
+	    int removed_items = 0;
+	    while (current_node != nullptr)
+	    {
+            nodePTR target_node = current_node;
+            
+            if (target_node != nullptr)
+            {
+                delete target_node;
+                removed_items++;
+            }
+            
+            current_node = current_node->m_next;
+	    }
+	    //std::cout << "[+] Cleaned up " << removed_items << " list items" << std::endl; 
 	}
 	
 };
