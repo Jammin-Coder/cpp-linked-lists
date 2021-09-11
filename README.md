@@ -16,6 +16,7 @@ TYPE specifies the type of data to be stored in the list, I've tested it with `i
 FIRST_DATA is the data that you want to be contained at the first index of the list. At the moment it is required that you supply this value when instantiating a new list.  
 
 ### Examples:
+#### Check out the code in `main.cpp` for some more examples! Go ahead and compile and run it too!
 ``` c++
 List<int> int_list = List<int>(0); // Creates a new doubly linked list of ints with 0 stored at the first index
 int_list.append(2); // Appends 2 to int_list
