@@ -9,6 +9,14 @@ private:
 
     bool has_initialized = false;
 
+public:
+	#define nodePTR Node<T>*
+	
+	int length = 0;
+
+	nodePTR first_node = new_node<T>();
+	nodePTR last_node = first_node;
+	
 	int last_index()
 	{
 	    if (length > 0)
@@ -17,18 +25,10 @@ private:
 		} 
 		else 
 		{
-		    return 0;
+		    return -1;
 		} 
 	}
 
-public:
-	#define nodePTR Node<T>*
-	
-	int length = 0;
-	
-	nodePTR first_node = new_node<T>(last_index());
-	nodePTR last_node = first_node;
-	
 	nodePTR get_node_at_index(int index)
 	{
 	    if (index > last_index())
@@ -113,7 +113,7 @@ public:
 	    if (has_initialized)
 	    {
 		    // New node to be prepended
-		    nodePTR node = new_node<T>(last_index());
+		    nodePTR node = new_node<T>();
 		    
 		    // Sets the new node's previous node to that of the first node
 		    node->m_prev = first_node->m_prev;
@@ -132,7 +132,8 @@ public:
 		}
 		else 
 		{
-		    first_node->m_data;   
+		    first_node->m_data = data;
+			has_initialized = true;
 		}
 		
 		length++;
@@ -143,7 +144,7 @@ public:
 	    if (has_initialized)
 	    {
 		    // New node that will be appended
-		    nodePTR node = new_node<T>(last_index());
+		    nodePTR node = new_node<T>();
 		    
 		    // Sets the new node's next node to the last_node's next node.
 		    node->m_next = last_node->m_next;
@@ -171,6 +172,55 @@ public:
 		
 	}
 	
+	void insert_after(T data, int index)
+	{	
+		if (index > last_index())
+		{
+			std::cerr << "[+] ERROR: Index " << index << " out of range for list that is of size " << length << std::endl;
+			exit(-1);
+		}
+
+		if (index == last_index() || length == 0)
+		{
+			append(data);
+			// DO NOT INCREMENT LENGTH AS THIS IS ALREADY DONE IN APPEND METHOD
+		}
+		else
+		{
+			
+			nodePTR n_node = new_node<T>(); // New node
+			nodePTR target_node = get_node_at_index(index); // Node to insert n_node after
+			nodePTR after_node = target_node->m_next;
+			
+			n_node->m_data = data;
+			n_node->m_prev = target_node;
+			n_node->m_next = after_node;
+
+			target_node->m_next = n_node;
+			after_node->m_prev = n_node;
+			length++;
+		}
+	}
+
+	void insert_before(T data, int index)
+	{
+		if (index > last_index())
+		{
+			std::cout << "[-] ERROR: Index " << index << " out of range for list that is of length " << length << std::endl;
+			exit(-1);
+		}
+		// DO NOT INCREMENT SIZE AS THIS IS DONE IN PREPEND AND INSERT_AFTER METHODS
+		if (index == 0)
+		{
+			prepend(data);
+		}
+		else
+		{
+			insert_after(data, index - 1);
+		}
+		
+	}
+
 	T remove(int index)
 	{
 	    nodePTR target_node = get_node_at_index(index);
@@ -223,14 +273,13 @@ public:
 	    }
 	    return size;
 	}
+
+	/* Constructor and destructor functions */
+
+	// Default
+	List(void){};
 	
-	
-	// Constructor and destructor functions
-	List(void)
-	{
-		
-	}
-	
+	// Initialize list with values of passed array
 	List(T init_arr[], int size)
 	{
 	    for (int i = 0; i < size; i++)
@@ -239,6 +288,7 @@ public:
 	    }
 	}
 	
+	// Destroy list when it goes out of scope.
 	~List()
 	{
 	    nodePTR current_node = first_node;
@@ -255,11 +305,7 @@ public:
             
             current_node = current_node->m_next;
 	    }
-	    //std::cout << "[+] Cleaned up " << removed_items << " list items" << std::endl; 
 	}
 	
 };
-
-
-
 

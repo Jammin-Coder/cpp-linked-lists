@@ -2,11 +2,10 @@
 
 
 template<typename T>
-Node<T>* new_node(int index)
+Node<T>* new_node()
 {
 	//Makes a new pointer to a list node.
 	Node<T>* node = (Node<T>*)malloc(sizeof(Node<T>));
-	node->m_index = index;
 	return node;
 }
 
