@@ -18,7 +18,7 @@ int main()
     std::cout << "[+] Contents of demo_list is are: " << std::endl;
     demo_list.print(); // Print demo_list
     std::cout << std::endl;
-    std::cout << "[+] The length of demo_list is " << demo_list.length << std::endl;
+    std::cout << "[+] The length of demo_list is " << demo_list.m_length << std::endl;
 
     std::cout << "\n\n-------- STRING LIST DEMO --------\n" << std::endl;
     
@@ -72,7 +72,6 @@ int main()
 
     std::cout << "[+] Dereferenced value of " << p_int_list2 << " is " \
     << p_int_list2->at(3) << std::endl;
-
 }
 
 
