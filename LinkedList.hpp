@@ -4,17 +4,20 @@
 template<typename T>
 class List
 {
-public:
     #define nodePTR Node<T>*
     bool m_has_initialized = false;
 
     int m_length = 0; // Length of list
+
+public:
+    
 
 	nodePTR m_first_node = new_node<T>();
 	nodePTR m_last_node = m_first_node;
 
     // Methods
     int last_index(); // Returns the last valid index for the list
+    int length(); // Returns the length of the list
     nodePTR get_node_at_index(int index); // Returns the node at the given index
     void print(); // Prints all contents of list
     T at(int index); // Returns the data held in node at given index

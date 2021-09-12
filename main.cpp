@@ -15,10 +15,14 @@ int main()
     demo_list.insert_after(10, demo_list.last_index()); // Inserts 10 after last index of demo_list
     demo_list.insert_before(-1, 1); // Inserts -1 before index 0 of demo_list
 
-    std::cout << "[+] Contents of demo_list is are: " << std::endl;
-    demo_list.print(); // Print demo_list
-    std::cout << std::endl;
-    std::cout << "[+] The length of demo_list is " << demo_list.m_length << std::endl;
+    int demo_list_len = demo_list.length();
+    for (int i = 0; i < demo_list_len; i++)
+    {
+        std::cout << "[+] In demo_list, element at index " << i \
+        << " is " << demo_list.at(i) << std::endl;
+    }
+
+    std::cout << "[+] The length of demo_list is " << demo_list.length() << std::endl;
 
     std::cout << "\n\n-------- STRING LIST DEMO --------\n" << std::endl;
     

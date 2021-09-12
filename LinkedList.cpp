@@ -2,7 +2,6 @@
 
 /*******
 	TODO: Figure out if I can remove all of the template<typename T>s some how.
-	TODO: Fix the remove() method. It breaks if removing the first index. Should be simple.
 *******/
 
 
@@ -18,6 +17,12 @@ int List<T>::last_index()
 	{
 		return -1;
 	}
+}
+
+template<typename T>
+int List<T>::length()
+{
+	return m_length;
 }
 
 template<typename T>
@@ -176,28 +181,44 @@ void List<T>::append(T data)
 template<typename T>
 T List<T>::remove(int index)
 {
+	if (index > last_index())
+	{
+		std::cout << "[+] ERROR: Index out of range" << std::endl;
+		exit(-1);
+	}
+
 	nodePTR target_node = get_node_at_index(index);
 	T data = target_node->m_data;
-	
-	nodePTR before_node = target_node->m_prev;
-	nodePTR after_node = target_node->m_next;
 
-	if (before_node)
+	if (target_node == m_first_node)
 	{
-		before_node->m_next = after_node;
+		if (m_first_node->m_next)
+		{
+			m_first_node = m_first_node->m_next;
+			m_first_node->m_prev = nullptr;
+		}
 	}
-		
-	if (after_node)
-	{   
+	else if (target_node == m_last_node)
+	{
+		if (m_last_node->m_prev)
+		{
+			m_last_node = m_last_node->m_prev;
+			m_last_node->m_next = nullptr;
+		}
+	}
+	else 
+	{
+		nodePTR before_node = target_node->m_prev;
+		nodePTR after_node = target_node->m_next;
+
+		before_node->m_next = after_node;
 		after_node->m_prev = before_node;
 	}
-	
-	delete target_node;
 
+	delete target_node;
 	m_length--;
 	return data;
 }
-
 
 template<typename T>
 T List<T>::pop()
@@ -217,7 +238,6 @@ T List<T>::pop()
 	m_length--;
 	return data;
 }
-
 
 // Inserts a new node with given data after given index
 template<typename T>
@@ -312,18 +332,19 @@ List<T>::List(T init_arr[], int size)
 template<typename T>
 List<T>::~List()
 {
-	nodePTR current_node = m_first_node;
-	int removed_items = 0;
-	while (current_node != nullptr)
+	if (size_bytes() > sizeof(Node<T>))
 	{
-		nodePTR target_node = current_node;
-		
-		if (target_node != nullptr)
+		nodePTR current_node = m_first_node;
+		while (current_node != nullptr)
 		{
-			delete target_node;
-			removed_items++;
+			nodePTR target_node = current_node;
+			
+			if (target_node != nullptr)
+			{
+				delete target_node;
+			}
+			
+			current_node = current_node->m_next;
 		}
-		
-		current_node = current_node->m_next;
 	}
 }
